@@ -2,10 +2,10 @@
 	heap
 	This question requires you to implement a binary heap function
 */
-// I AM NOT DONE
 
 use std::cmp::Ord;
 use std::default::Default;
+use std::fmt::Display;
 
 pub struct Heap<T>
 where
@@ -38,6 +38,20 @@ where
 
     pub fn add(&mut self, value: T) {
         //TODO
+        self.items.push(value);
+        self.count += 1;
+        let mut children_id = self.len();
+        let mut parent_idx = self.parent_idx(children_id);
+        while children_id > 1 {
+            // println!("parent_id: {}, children_id: {}", parent_idx, children_id);
+            if (self.comparator)(&self.items[parent_idx], &self.items[children_id]) {
+                break;
+            }
+            // println!("swap {}, {}", parent_idx, children_id);
+            self.items.swap(parent_idx, children_id);
+            children_id = parent_idx;
+            parent_idx = self.parent_idx(parent_idx);
+        } 
     }
 
     fn parent_idx(&self, idx: usize) -> usize {
@@ -56,10 +70,10 @@ where
         self.left_child_idx(idx) + 1
     }
 
-    fn smallest_child_idx(&self, idx: usize) -> usize {
-        //TODO
-		0
-    }
+    // fn smallest_child_idx(&self, idx: usize) -> usize {
+        // //TODO
+		// 0
+    // }
 }
 
 impl<T> Heap<T>
@@ -79,13 +93,19 @@ where
 
 impl<T> Iterator for Heap<T>
 where
-    T: Default,
+    T: Default + Display,
 {
     type Item = T;
 
     fn next(&mut self) -> Option<T> {
         //TODO
-		None
+        if self.is_empty() {
+            return None;
+        }
+        let x = self.items.remove(1);
+        self.count -= 1;
+        // println!("x: {}", x);
+        Some(x)
     }
 }
 
