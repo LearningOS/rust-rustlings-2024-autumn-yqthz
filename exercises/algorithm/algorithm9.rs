@@ -43,11 +43,9 @@ where
         let mut children_id = self.len();
         let mut parent_idx = self.parent_idx(children_id);
         while children_id > 1 {
-            // println!("parent_id: {}, children_id: {}", parent_idx, children_id);
             if (self.comparator)(&self.items[parent_idx], &self.items[children_id]) {
                 break;
             }
-            // println!("swap {}, {}", parent_idx, children_id);
             self.items.swap(parent_idx, children_id);
             children_id = parent_idx;
             parent_idx = self.parent_idx(parent_idx);
